@@ -1,0 +1,293 @@
+@import 'ui-variables';
+
+// Spacing scale: 4 · 8 · 12 · 16 · 24 (CSS px)
+// Thread rows 78 · line height 22 · body text 15 · text starts 73px from the list edge
+// Sidebar rows 35 (33 + 2 gap), 9px pill radius · message cards 12px radius, 16px inset.
+@s1: 4px;
+@s2: 8px;
+@s3: 12px;
+@s4: 16px;
+@s6: 24px;
+
+body, input, textarea, button {
+  font-family: @font-family;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: fade(@graphite-blue, 22%); }
+
+// ── Toolbar ──────────────────────────────────────────────────────────────
+// On macOS 26, Mailspring paints the toolbar with @panel-background-color and draws a light
+// hairline across its full width, over the dark sidebar too.
+.sheet-toolbar-container,
+body.is-blurred .sheet-toolbar-container {
+  background-image: none;
+  background: @white;
+  .toolbar-RootSidebar { background: @graphite-sidebar; }
+  .toolbar-MessageList { background: @graphite-reading-bg; }
+}
+.sheet-toolbar { border-bottom: none; }
+
+// macOS 26 draws every toolbar button and button group as an outlined pill (workspace.less,
+// platform-darwin block) and those rules win over theme rules: !important is required here.
+// Bare 18px icons that only get a fill on hover.
+.sheet-toolbar .btn-toolbar,
+.sheet-toolbar .button-group .btn.btn-toolbar {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 0 11px;
+  img.content-mask { background-color: #6b7080; }
+  &:hover { background: fade(@black, 5%) !important; }
+  &:active { background: fade(@black, 9%) !important; }
+}
+.sheet-toolbar .button-group {
+  box-shadow: none !important;
+  background: transparent !important;
+}
+.toolbar-RootSidebar .btn.btn-toolbar {
+  img.content-mask { background-color: @graphite-sidebar-text; }
+  &:hover { background: @graphite-sidebar-hover; }
+}
+
+// Search: 30px filled field, 16px from the column edges.
+.thread-search-bar {
+  height: 30px;
+  margin: 8px @s4 0 @s4;
+  background: #eef0f3;
+  border: none;
+  border-radius: 8px;
+  box-shadow: none;
+  * { background-color: transparent; border: none; box-shadow: none; }
+  &.focused { background: @white; box-shadow: 0 0 0 2px fade(@graphite-blue, 35%); }
+  .suggestions { background: @white; }
+}
+
+// ── Sidebar: charcoal, white text, blue pill for the selected folder ─────
+.account-sidebar,
+:where(.nav-rail-content) .account-sidebar { background-color: @graphite-sidebar; }
+
+.account-sidebar .outline-view {
+  .heading {
+    color: @graphite-sidebar-muted;
+    font-size: 14px;
+    font-weight: 400;
+    padding: @s6 @s2 @s1 @s4 + 2px;
+    img { background: @graphite-sidebar-muted; }
+  }
+  .item-container { padding: 1px @s3 1px @s2; }
+  .item-children { padding-left: @s3; }
+  .item {
+    color: @graphite-sidebar-text;
+    font-size: 15px;
+    height: 33px;
+    padding: 0 @s3 0 @s2 + 2px;
+    border-radius: 9px;
+    img.content-mask { background-color: @graphite-sidebar-text; }
+    .icon { padding-right: @s3; }
+    &:hover { background: @graphite-sidebar-hover; }
+    &:focus-visible { outline: 2px solid fade(@graphite-blue, 70%); outline-offset: -2px; }
+    .item-count-box {
+      color: @graphite-sidebar-muted;
+      box-shadow: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+    &.selected {
+      background: @graphite-blue;
+      color: @white;
+      font-weight: 500;
+      img.content-mask { background-color: @white; }
+      .item-count-box { color: fade(@white, 85%); }
+    }
+  }
+}
+.account-sidebar .outline-view:first-child .heading { color: @graphite-sidebar-text; font-weight: 600; }
+
+// ── Thread list ──────────────────────────────────────────────────────────
+// Three-line cards at any column width.
+mailspring-workspace {
+  --thread-list-narrow-style-width: 4000px;
+  --thread-list-item-height-narrow: 78;
+}
+// Mailspring greys out read threads (thread-list.less) and draws a rule between rows.
+.thread-list .list-item,
+.thread-list .list-item.unread,
+.thread-list .list-item.keyboard-cursor {
+  background-color: @white;
+  border-top: none;
+  border-bottom: none;
+  box-shadow: none;
+  &:hover { background-color: @list-hover-bg; }
+}
+.thread-list .list-item.selected,
+.thread-list .list-item.focused,
+.thread-list.focused .list-item.selected {
+  background: @graphite-list-selected;
+  color: @graphite-text;
+  border-color: @graphite-list-selected;
+}
+.column-MessageList { background: @graphite-reading-bg; }
+.thread-list-narrow {
+  .list-tabular-item { padding: 6px @s6 6px 0; }
+  .mail-important-icon { display: none; }
+  .participants-wrapper { min-height: 22px; }
+  .participants, .subject, .snippet, .snippet-and-labels .snippet { line-height: 22px; }
+  .participants {
+    font-size: 15px;
+    font-weight: 600;
+    color: @graphite-text;
+  }
+  .subject {
+    font-size: 15px;
+    font-weight: 400;
+    color: @graphite-text;
+  }
+  .snippet, .snippet-and-labels .snippet {
+    font-size: 14.5px;
+    color: @graphite-text-3;
+  }
+  .timestamp {
+    font-size: 13px;
+    color: @graphite-text-3;
+    font-variant-numeric: tabular-nums;
+  }
+  .unread .participants { font-weight: 700; }
+  .unread .subject { font-weight: 600; }
+}
+
+// ── Composer ─────────────────────────────────────────────────────────────
+// Fields share one 24px margin, soft rules, a prominent subject, a quiet send bar.
+@composer-x: @s6;
+.composer-inner-wrap {
+  background: @white;
+  .composer-field-label { color: @graphite-text-3; font-size: 14px; }
+  .composer-participant-field,
+  .composer-subject { font-size: 15px; }
+  .composer-subject {
+    &:after { background: @graphite-border; left: @composer-x; width: calc(~'100% - 48px'); }
+    input {
+      padding: 14px @composer-x 12px @composer-x;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: @graphite-text;
+      &::-webkit-input-placeholder { color: @graphite-text-3; font-weight: 500; }
+    }
+  }
+  .composer-action-bar-wrap {
+    background: @white;
+    border-top: 1px solid @graphite-border;
+    border-radius: 0;
+    box-shadow: none;
+    .composer-action-bar-content { padding: @s3 @composer-x; align-items: center; }
+    .btn.btn-toolbar:not(.btn-emphasis) {
+      border-radius: 8px;
+      &:hover { background: fade(@black, 5%); }
+    }
+  }
+}
+
+// Send button: flat blue, 8px radius, 32px tall. button-dropdown.less paints a gradient on the
+// .primary-item / .secondary-picker children of .button-dropdown.btn-emphasis without giving
+// them the class, so they are targeted through the container.
+.button-dropdown.btn-emphasis .primary-item,
+.button-dropdown.btn-emphasis .secondary-picker,
+.button-dropdown.btn-emphasis .only-item {
+  background: @graphite-blue !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: @white !important;
+  height: 32px;
+  line-height: 32px;
+  font-size: 14px;
+  font-weight: 600;
+  img.content-mask { background-color: @white !important; }
+  &:hover { background: darken(@graphite-blue, 5%) !important; }
+  &:active { background: darken(@graphite-blue, 10%) !important; }
+}
+.button-dropdown.btn-emphasis .primary-item { border-radius: 8px 0 0 8px !important; padding: 0 14px; }
+.button-dropdown.btn-emphasis .secondary-picker {
+  border-radius: 0 8px 8px 0 !important;
+  border-left: 1px solid fade(@white, 28%) !important;
+  padding: 0 8px;
+}
+.button-dropdown.btn-emphasis .only-item { border-radius: 8px !important; padding: 0 14px; }
+
+// Editor text: Mailspring's "Sans Serif" sets no font rule, so the editor fell back to Times.
+.RichEditor-root,
+.RichEditor-root .RichEditor-content,
+.RichEditor-root [contenteditable],
+.composer-editor-plaintext {
+  font-family: @font-family;
+}
+.RichEditor-root { padding: 0 @composer-x; }
+.RichEditor-root .RichEditor-content { font-size: 15px; line-height: 1.55; padding-top: @s4; color: @graphite-text; }
+.RichEditor-toolbar {
+  font-family: @font-family;
+  .floating-container { border-bottom-color: @graphite-border; }
+  .divider { border-right-color: @graphite-border; height: 16px; margin: 0 @s1; }
+  button, .btn { border-radius: 6px; }
+}
+
+// ── Reading pane: light grey surface, each message on a white card ───────
+@card-inset: @s4;
+#message-list {
+  background: @graphite-reading-bg;
+  .messages-wrap { background: @graphite-reading-bg; }
+  .messages-wrap .scroll-region-content-inner { padding: 0 @card-inset @card-inset; }
+  .message-subject-wrap {
+    padding: @s4 @card-inset @s3 @card-inset + 4px;
+    .message-subject {
+      font-size: 20px;
+      line-height: 26px;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      color: @graphite-text;
+    }
+  }
+  .message-item-wrap { margin-bottom: @s3; }
+  .message-item-wrap .message-item-white-wrap {
+    background: @white;
+    border-radius: 12px;
+    box-shadow: 0 0 0 1px @graphite-card-border, 0 1px 2px fade(@black, 4%);
+  }
+  // Recipients and the unsubscribe link in a discreet grey.
+  .message-header {
+    .participants-to, .header-row, .message-participants .participant-type { color: @graphite-text-3; }
+    a { color: @graphite-text-3; text-decoration: none; &:hover { color: @graphite-blue; } }
+  }
+  // "Write a reply…": its own rounded card, 12px below the message.
+  .footer-reply-area-wrap {
+    margin: @s3 0 0;
+    border: none;
+    border-radius: 12px;
+    background: @white;
+    box-shadow: 0 0 0 1px @graphite-card-border;
+    overflow: hidden;
+    &:hover { box-shadow: 0 0 0 1px darken(@graphite-card-border, 8%); }
+    .footer-reply-area { padding: 13px @s4; color: @graphite-text-3; font-size: 14px; }
+  }
+  // Inline reply composer. Mailspring (composer.less) paints it cream when blurred and gives it
+  // a 3px blue shadow on 4px corners when focused. Same card as the message, rounded focus ring.
+  .message-item-wrap .message-item-white-wrap.composer-outer-wrap {
+    background: @white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px @graphite-card-border;
+    outline: none;
+    .composer-action-bar-wrap,
+    .RichEditor-toolbar .inner { background: @white; }
+    .show-more-fade { background: linear-gradient(to right, fade(@white, 0%) 0%, @white 40%); }
+    &.focused {
+      background: @white;
+      box-shadow: 0 0 0 1px fade(@graphite-blue, 70%), 0 0 0 4px fade(@graphite-blue, 14%);
+      .composer-action-bar-wrap,
+      .RichEditor-toolbar .inner { background: @white; }
+      .show-more-fade { background: linear-gradient(to right, fade(@white, 0%) 0%, @white 40%); }
+    }
+  }
+}

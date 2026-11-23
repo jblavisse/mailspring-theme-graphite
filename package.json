@@ -1,0 +1,14 @@
+{
+  "name": "mailspring-theme-graphite",
+  "displayName": "Graphite",
+  "theme": "ui",
+  "version": "1.0.0",
+  "description": "A calm light theme for Mailspring: charcoal sidebar, airy three-line cards, Inter, rounded cards.",
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jblavisse/mailspring-theme-graphite"
+  },
+  "engines": { "mailspring": ">=1.26.0" },
+  "private": true
+}
