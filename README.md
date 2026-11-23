@@ -2,7 +2,11 @@
 
 A light theme for [Mailspring](https://getmailspring.com) built around a charcoal sidebar, airy three-line message cards and the [Inter](https://rsms.me/inter/) typeface. Every size comes from one measured layout grid.
 
-Pairs with **[mailspring-plugin-graphite](https://github.com/jblavisse/mailspring-plugin-graphite)**, which adds sender avatars, a list header with a compose button, and drafts as cards.
+Pairs with three small plugins, each installable on its own:
+
+- **[mailspring-plugin-avatars](https://github.com/jblavisse/mailspring-plugin-avatars)**: sender avatars in the thread list.
+- **[mailspring-plugin-list-header](https://github.com/jblavisse/mailspring-plugin-list-header)**: folder name and a compose button above the list.
+- **[mailspring-plugin-draft-cards](https://github.com/jblavisse/mailspring-plugin-draft-cards)**: the Drafts folder as inbox-style cards.
 
 ## What changes
 
@@ -51,7 +55,7 @@ Restart Mailspring, then pick **Graphite** in **Change Theme…**
 ## Recommended settings
 
 - **View → Reading Pane Vertical**, then drag the list to about 510px wide.
-- With the companion plugin: sender avatars and the list header.
+- Install the three companion plugins listed above.
 
 ## Limitations
 
